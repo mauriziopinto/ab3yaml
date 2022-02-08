@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: minsait-fe
+  labels:
+     app: minsait-fe
+spec:
+  selector:
+    matchLabels:
+      app: minsait-fe
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minsait-fe
+    spec:
+      containers:
+      - name: minsait-fe
+        image: mauriziopinto/minsait-fe:latest
+        imagePullPolicy: Always
+        env:
+           - name: REACT_APP_API_URL
+             value: "http://a29e47cb13828435aa8aadb7fdf619a0-1388277698.eu-central-1.elb.amazonaws.com"
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: minsait-fe-svc
+spec:
+  selector:
+    app: minsait-fe
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer

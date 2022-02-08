@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addc-fe
+  labels:
+     app: addc-fe
+spec:
+  selector:
+    matchLabels:
+      app: addc-fe
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: addc-fe
+    spec:
+      containers:
+      - name: addc-fe
+        image: mauriziopinto/addc-fe:v1
+        imagePullPolicy: Always
+        env:
+           - name: REACT_APP_API_URL
+             value: "http://a378c155774c9489caebcffb44867f29-1920100044.eu-central-1.elb.amazonaws.com"
+        ports:
+          - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: addc-fe-svc
+spec:
+  selector:
+    app: addc-fe
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
