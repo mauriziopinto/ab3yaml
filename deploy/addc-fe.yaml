@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: addc-fe
-        image: mauriziopinto/addc-fe:v1
+        image: mauriziopinto/addc-fe:v2
         imagePullPolicy: Always
         env:
            - name: REACT_APP_API_URL
